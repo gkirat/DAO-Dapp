@@ -24,19 +24,25 @@ contract Dao{
     mapping(address=>mapping(uint=>bool)) private isVoted; //To see if investor has already voted or not 
     mapping(address=>mapping(address=>bool)) public withdrwalStatus; //If some person wants to withdraw money
 
-    address[] public investorList;
+    // address[] public investorList;
+    address[]  investorList;
     Proposal[] public proposalList;
 
     uint public totalShares;
     uint public totalFunds;
     uint public nextProposalId;
     // uint public totalCollectedFunds;  //In Total funds collected up until date 
-    uint public participationTime;
-    uint public voteTime;
-    uint public quorum;  
-    address public manager;
+    // uint public participationTime;
+    // uint public voteTime;
+    // uint public quorum;  
+    // address public manager;
+     uint  participationTime;
+    uint  voteTime;
+    uint  quorum; 
+    address  manager;
 
     constructor (uint _participationTime,uint _voteTime,uint _quorum){
+        require(_quorum >0 && _quorum <100,"The value of quorum should be between 0 and 10.");
         manager = msg.sender ;
         participationTime = block.timestamp + _participationTime;
         voteTime = _voteTime;
@@ -59,12 +65,17 @@ contract Dao{
         isInvestor[msg.sender] = true;
         numOfShare[msg.sender]+= msg.value;
         totalShares += msg.value;
+        bool alreadyInList = false;
         for(uint i=0;i<investorList.length;i++){
-            if(msg.sender != investorList[i]){
-                investorList.push(msg.sender);
+            if(msg.sender == investorList[i]){
+                alreadyInList = true;
+                break;
             }
         }
-       
+        if(alreadyInList == false ){
+            investorList.push(msg.sender);
+        }
+           
     }
 
     function redeemShare(uint valueToRedeem)external payable onlyInvestor{ //for redeeming the shares
@@ -105,17 +116,20 @@ contract Dao{
         require(_proposalId <= nextProposalId,"This proposal does not exist");
         require(isVoted[msg.sender][_proposalId] == false,"You have already voted"); 
         require(proposal[_proposalId].endTime >= block.timestamp,"Voting has ended"); 
-        require(proposal[_proposalId].isExecuted == false,"Funds has been transfered already");
+        // require(proposal[_proposalId].isExecuted == false,"Funds has been transfered already");
         proposal[_proposalId].votes += numOfShare[msg.sender];
         isVoted[msg.sender][_proposalId] = true;
+        proposalList[_proposalId].votes += numOfShare[msg.sender];
+
     }
 
-    function executeProposal(uint proposalId)public payable owner {
+    function executeProposal(uint proposalId)public  owner {
         Proposal storage propose = proposal[proposalId];
         require(((propose.votes*100)/totalFunds)>= quorum,"Not greater than the quorum");
         require(propose.isExecuted ==false,"Funds has been already executed");    //Sir didn't include this statement
         require(proposalId <= nextProposalId,"This proposal does not exist");     //Sir didn't include this statement  
         propose.isExecuted = true;
+        proposalList[proposalId].isExecuted = true;
         _transfer(propose.amount,propose.recipient);
         // address  toSend = proposal[proposalId].recipient;
         // payable(toSend).transfer(proposal[proposalId].amount);
@@ -123,6 +137,8 @@ contract Dao{
     }
 
     function _transfer(uint amount, address payable to)internal{
+        require(amount <= totalFunds,"Insuffienct funds"); 
+        totalFunds -= amount;
         to.transfer(amount); 
     }
 
@@ -133,12 +149,20 @@ contract Dao{
         withdrwalStatus[manager][to] = false ;
     }
 
-    function withdrawEther()public {
+    function withdrawAllEther()public {
         require(withdrwalStatus[manager][msg.sender] == true,"You are not allowed to withdraw");
-        require(numOfShare[msg.sender]<= totalFunds,"We don't have enough funds");
+        // require(numOfShare[msg.sender]<= totalFunds,"We don't have enough funds");
         uint amount = numOfShare[msg.sender];
         numOfShare[msg.sender] = 0;
         _transfer(amount,payable(msg.sender));
 
+    }
+    function ProposalList() public view returns(Proposal[] memory){
+        return proposalList;
+    }
+
+
+    function InvestorList()public view returns(address[] memory){
+        return investorList;
     }
 }
