@@ -12,6 +12,7 @@ function App() {
   });
   const [account, setAccount] = useState("Not connected");
   const [balance,setBalance]= useState(0)
+  const [date,setDate] = useState(new Date().toGMTString())
   useEffect(() => {
     async function init() {
       const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
@@ -54,13 +55,30 @@ function App() {
       setAccount(selectedAccountAddress);
     }
   };
-  
+
+  useEffect(()=>{
+
+    async function bal(){
+      const funds = await state.contract.methods.totalFunds().call();
+      setBalance(funds)
+    }
+    state.contract && bal()
+  },[state])
+
+  useEffect(()=>{
+  const intervalId =  setInterval(()=>{
+    setDate(new Date().toGMTString())
+  },1000)
+  return ()=>clearInterval(intervalId)
+  },[])
+  // console.log(date)
 //code for account balance
   return (
     <div className="App">
    <h1>Decentralize Autonoumous Organization</h1>
+   <div id="date">{date} </div>
    <p className="font">Connected Account: {account}</p>
-   <p className="font">Available Funds: {balance} ETH</p>
+   <p className="font">Available Funds: {balance} WEI</p>
    <form className="label0" id="myForm">
         <label htmlFor=""></label>
         <select className="innerBox" id="selectNumber" onChange={selectAccount}>

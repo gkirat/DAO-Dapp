@@ -1,11 +1,24 @@
 import "./investors.css"
 function TransferShare({state,account}){
 
-    return<><form>
-    <label className="label1" htmlFor="amount">
-    <span className="font">Amount:</span>
+    async function transferShare(event){
+        event.preventDefault()
+        const amount = document.querySelector("#amoun").value
+        const to = document.querySelector("#to").value
+        
+        try{
+            await state.contract.methods.transfershares(amount,to).send({from:account,gas:"1000000"})
+            alert("Shares transferred succesfully");
+            window.location.reload( )
+        }catch(error){
+            alert(error)
+        }
+    }
+    return<><form onSubmit={transferShare} >
+    <label className="label1" htmlFor="amoun">
+    <span className="font">Amoun:</span>
         </label>
-    <input type="text" id="amount"></input>
+    <input type="text" id="amoun"></input>
     <label className="label1" htmlFor="to">
     <span className="font">Address:</span>
         </label>

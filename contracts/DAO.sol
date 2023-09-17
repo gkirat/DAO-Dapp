@@ -58,7 +58,7 @@ contract Dao{
         _;
     }
 
-    function contribuition()external payable {  //1 wei = 1 share
+    function contribuition() external payable {  //1 wei = 1 share
         require(block.timestamp <= participationTime,"Contribuition has ended");
         require(msg.value > 0,"Investment amount should be greater than zero");
         totalFunds += msg.value;
@@ -105,7 +105,7 @@ contract Dao{
         // }
     }
 
-    function createProposal(string  calldata _causeDescriptoin,uint amount,address payable _recipient)public {
+    function createProposal(string  calldata _causeDescriptoin,uint amount,address payable _recipient)public onlyInvestor {
         require(amount <= totalFunds,"Insuffienct funds") ;
         proposal[nextProposalId] = Proposal(nextProposalId,_causeDescriptoin,_recipient,amount,0,block.timestamp+voteTime,false);
         proposalList.push(proposal[nextProposalId]);

@@ -1,8 +1,24 @@
 import "./manager.css"
+// import { useState,useEffect } from 'react'
 function CreateProposal({state,account}){
-    
+
+        async function createProposal(event){
+            event.preventDefault()
+            const description = document.querySelector("#description").value
+            const amount = document.querySelector("#amount").value
+            const recipient = document.querySelector("#recipient").value
+            try{
+                await state.contract.methods.createProposal(description,amount,recipient).send({from:account,gas:"1000000"})
+                alert("Proposal created succesfully")
+                window.location.reload();
+            }
+            catch(error){
+                alert(error)
+            }
+        }
+  
    
-    return<><form >
+    return<><form onSubmit={createProposal} >
     <label className="label1" htmlFor="name">
     <span className="font">Description:</span>
     </label>

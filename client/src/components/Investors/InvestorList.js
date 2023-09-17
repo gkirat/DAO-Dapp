@@ -1,11 +1,27 @@
 import {useState,useEffect} from "react"
 function InvestorList({state}){
+   const [list,setList] = useState([])
+
+   useEffect(()=>{
+      async function investorList(){
+         const list = await state.contract.methods.InvestorList().call()
+
+         setList(list)
+      }
+     state.contract && investorList()
+   },[state])
  
-   return<>
-    <div className="list">
-    <h3>Investor's List</h3>
-   
-    </div>
+   return <>
+      <table className="list">
+         <tbody>
+            {list.map((singleAddress,index)=>{
+              return( <tr key={index}>
+                  {singleAddress}
+               </tr>)
+            })}
+         </tbody>
+      </table>
    </>
+   
   }
   export default InvestorList;
