@@ -1,4 +1,5 @@
-import "./manager.css"
+// import "./manager.css"
+import {toast} from "sonner"
 // import { useState,useEffect } from 'react'
 function CreateProposal({state,account}){
 
@@ -13,12 +14,13 @@ function CreateProposal({state,account}){
                 window.location.reload();
             }
             catch(error){
-                alert(error)
+                console.table(error.message)
+                toast.error(error.message)
             }
         }
   
    
-    return<><form onSubmit={createProposal} >
+    return<><form onSubmit={createProposal}>
     <label className="label1" htmlFor="name">
     <span className="font">Description:</span>
     </label>

@@ -9,6 +9,7 @@ function Contribute({state,account}){
       alert("Contribution succesful")
       window.location.reload()
     }catch(error){
+      console.log(error)
       alert(error)
     }
    

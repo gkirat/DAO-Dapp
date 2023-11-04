@@ -142,21 +142,6 @@ contract Dao{
         to.transfer(amount); 
     }
 
-    function allow(address to) public owner{
-        withdrwalStatus[manager][to] = true;
-    }
-     function disAllow(address to) public owner{
-        withdrwalStatus[manager][to] = false ;
-    }
-
-    function withdrawAllEther()public {
-        require(withdrwalStatus[manager][msg.sender] == true,"You are not allowed to withdraw");
-        // require(numOfShare[msg.sender]<= totalFunds,"We don't have enough funds");
-        uint amount = numOfShare[msg.sender];
-        numOfShare[msg.sender] = 0;
-        _transfer(amount,payable(msg.sender));
-
-    }
     function ProposalList() public view returns(Proposal[] memory){
         return proposalList;
     }

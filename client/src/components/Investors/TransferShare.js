@@ -16,7 +16,7 @@ function TransferShare({state,account}){
     }
     return<><form onSubmit={transferShare} >
     <label className="label1" htmlFor="amoun">
-    <span className="font">Amoun:</span>
+    <span className="font">Amount:</span>
         </label>
     <input type="text" id="amoun"></input>
     <label className="label1" htmlFor="to">

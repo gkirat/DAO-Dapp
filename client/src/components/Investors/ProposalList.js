@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react";
+import {taost} from "sonner"
 
 function ProposalList({state}){
    const [proposal,setProposals] = useState([])
@@ -19,7 +20,10 @@ function ProposalList({state}){
             const date = new Date(prop.endTime*1000).toGMTString()
             // console.log(date)
               return ( 
-               <> 
+               <>
+
+              
+               
                <tr > Cause ID
                <td >{prop.causeId}</td>
                </tr>

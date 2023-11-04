@@ -4,6 +4,7 @@ import DAO from "./contracts/DAO.json";
 import "./App.css";
 import Investors from "./components/Investors/Investors";
 import Manager from "./components/Manager/Manager";
+import {Taoater, Toaster} from "sonner"
 
 function App() {
   const [state, setState] = useState({
@@ -13,6 +14,7 @@ function App() {
   const [account, setAccount] = useState("Not connected");
   const [balance,setBalance]= useState(0)
   const [date,setDate] = useState(new Date().toGMTString())
+  
   useEffect(() => {
     async function init() {
       const provider = new Web3.providers.HttpProvider("HTTP://127.0.0.1:7545");
@@ -45,6 +47,7 @@ function App() {
     };
     web3 && allAccounts();
   }, [state]);
+
   const selectAccount = async () => {
     let selectedAccountAddress = document.getElementById("selectNumber").value;
 
@@ -74,7 +77,7 @@ function App() {
   // console.log(date)
 //code for account balance
   return (
-    <div className="App">
+    <div className="App  bg-black flex flex-col justify-center items-center">
    <h1>Decentralize Autonoumous Organization</h1>
    <div id="date">{date} </div>
    <p className="font">Connected Account: {account}</p>
@@ -89,7 +92,7 @@ function App() {
       <Manager state={state} account={account}></Manager>
       <p className="font">For Investors</p>
      <Investors state={state} account={account}></Investors>
-    
+    <Toaster richColors position="top-center"  />
     </div>
   );
 }
