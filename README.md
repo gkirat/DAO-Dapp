@@ -92,4 +92,4 @@ Contributions to this project are welcome. You can contribute by:
 
 ## License
 
-[License](License)
+[License](https://github.com/gkirat/DAO-Dapp/blob/master/LICENSE)
