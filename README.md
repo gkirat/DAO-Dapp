@@ -91,4 +91,5 @@ Contributions to this project are welcome. You can contribute by:
 - Creating a pull request
 
 ## License
-(License)[License]
+
+[License](License)
