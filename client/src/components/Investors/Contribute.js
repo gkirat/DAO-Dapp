@@ -1,4 +1,5 @@
 import "./investors.css"
+import {toast} from "sonner"
 function Contribute({state,account}){
 
   async function contribution(event){
@@ -6,11 +7,11 @@ function Contribute({state,account}){
     const weiValue = document.querySelector("#weiValue").value;
     try{
       await state.contract.methods.contribuition().send({from:account,value:weiValue,gas:"1000000"})
-      alert("Contribution succesful")
+      toast.success("Contribution succesful")
       window.location.reload()
     }catch(error){
       console.log(error)
-      alert(error)
+      toast(error.message)
     }
    
   }

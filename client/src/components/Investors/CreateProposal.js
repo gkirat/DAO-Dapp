@@ -10,11 +10,11 @@ function CreateProposal({state,account}){
             const recipient = document.querySelector("#recipient").value
             try{
                 await state.contract.methods.createProposal(description,amount,recipient).send({from:account,gas:"1000000"})
-                alert("Proposal created succesfully")
+                toast.success("Proposal created succesfully")
                 window.location.reload();
             }
             catch(error){
-                console.table(error.message)
+                // console.table(error.message)
                 toast.error(error.message)
             }
         }

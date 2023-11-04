@@ -1,4 +1,5 @@
 import "./investors.css"
+import { toast } from "sonner"
 function TransferShare({state,account}){
 
     async function transferShare(event){
@@ -8,10 +9,10 @@ function TransferShare({state,account}){
         
         try{
             await state.contract.methods.transfershares(amount,to).send({from:account,gas:"1000000"})
-            alert("Shares transferred succesfully");
+            toast.success("Shares transferred succesfully");
             window.location.reload( )
         }catch(error){
-            alert(error)
+            toast.error(error.message)
         }
     }
     return<><form onSubmit={transferShare} >

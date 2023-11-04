@@ -1,4 +1,5 @@
 import "./manager.css"
+import { toast } from "sonner";
 function ExecuteProposal({state,account}){
    async function executeProposal(event){
     event.preventDefault();
@@ -6,10 +7,10 @@ function ExecuteProposal({state,account}){
     // console.log(id)
     try{
         await state.contract.methods.executeProposal(id).send({from:account,gas:"1000000"})
-        alert("Proposal executed succesfully")
+        toast.success("Proposal executed succesfully")
         window.location.reload(); 
     }catch(error){
-        alert(error)
+        toast.error(error.message)
     }
 
    }

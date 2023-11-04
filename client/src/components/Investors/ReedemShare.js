@@ -1,4 +1,6 @@
 import "./investors.css"
+import { toast } from "sonner"
+
 function ReedemShare({state,account}){
     async function redeemShare(event){
         event.preventDefault()
@@ -6,10 +8,10 @@ function ReedemShare({state,account}){
         // console.log(shares)
         try{
             await state.contract.methods.redeemShare(shares).send({from:account,gas:"1000000"})
-            alert("Shares redeemed succesfully");
+            toast.success("Shares redeemed succesfully");
             window.location.reload( )
         }catch(error){
-            alert(error)
+            toast.error(error.message)
         }
     }
     return<><form onSubmit={redeemShare}>
